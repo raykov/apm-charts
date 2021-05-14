@@ -40,3 +40,39 @@ var colorSchema = []drawing.Color{
 	{9, 83, 191, 255},
 	{0, 107, 194, 255},
 }
+
+// colorSchemaByStatusCode color Schema
+var colorSchemaByStatusCode = map[uint32]drawing.Color{
+	200: {255, 237, 160, 255},
+	201: {254, 217, 118, 255},
+	204: {254, 178, 76, 255},
+	403: {253, 141, 60, 255},
+	426: {252, 78, 42, 255},
+	500: {227, 26, 28, 255},
+	503: {189, 0, 38, 255},
+	504: {128, 0, 38, 255},
+}
+
+// Red stroke color
+var Red = drawing.Color{R: 235, G: 54, B: 75, A: 255}
+
+// RedFill color
+var RedFill = drawing.Color{R: 235, G: 54, B: 75, A: 20}
+
+// Green stroke color
+var Green = drawing.Color{R: 64, G: 196, B: 99, A: 255}
+
+// GreenFill color
+var GreenFill = drawing.Color{R: 64, G: 196, B: 99, A: 20}
+
+// Blue stroke color
+var Blue = drawing.Color{R: 0, G: 185, B: 217, A: 255}
+
+// BlueFill color
+var BlueFill = drawing.Color{R: 0, G: 185, B: 217, A: 20}
+
+// Yellow stroke color
+var Yellow = drawing.Color{R: 255, G: 204, B: 0, A: 255}
+
+// YellowFill color
+var YellowFill = drawing.Color{R: 255, G: 204, B: 0, A: 20}
