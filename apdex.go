@@ -27,10 +27,14 @@ func RenderApdex(values, timestamps []float64, w io.Writer, options Options) err
 	}
 
 	graph := chart.Chart{
-		Height: options.Height,
-		Width:  options.Width,
+		Height:       options.GetHeight(),
+		Width:        options.GetWidth(),
+		ColorPalette: options.GetColorPalette(),
+		Title:        options.GetTitle(),
+		TitleStyle:   options.GetTitleStyle(),
+
 		XAxis: chart.XAxis{
-			ValueFormatter: chart.TimeValueFormatterWithFormat("15:04"),
+			ValueFormatter: options.GetTimeFormatter(),
 		},
 		YAxis: chart.YAxis{
 			Ticks: []chart.Tick{

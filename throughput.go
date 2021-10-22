@@ -17,18 +17,18 @@ func RenderThroughput(values, timestamps []float64, w io.Writer, options Options
 		times = append(times, time.Unix(int64(timestamp/1000), 0))
 	}
 
-	if options.TimeFormat == "" {
-		options.TimeFormat = "15:04"
-	}
-
 	max := Max(values)
 	mx := max + max*0.1
 
 	graph := chart.Chart{
-		Height: options.Height,
-		Width:  options.Width,
+		Height:       options.GetHeight(),
+		Width:        options.GetWidth(),
+		ColorPalette: options.GetColorPalette(),
+		Title:        options.GetTitle(),
+		TitleStyle:   options.GetTitleStyle(),
+
 		XAxis: chart.XAxis{
-			ValueFormatter: chart.TimeValueFormatterWithFormat(options.TimeFormat),
+			ValueFormatter: options.GetTimeFormatter(),
 		},
 		YAxis: chart.YAxis{
 			Ticks: []chart.Tick{
