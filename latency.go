@@ -21,6 +21,7 @@ func RenderLatency(series [][]float64, timestamps []float64, w io.Writer, option
 		timeSeries = append(
 			timeSeries,
 			chart.TimeSeries{
+				Name: getLegend(options.Legend, index),
 				Style: chart.Style{
 					StrokeColor: colorSchema[index],
 					StrokeWidth: 1,
@@ -32,13 +33,23 @@ func RenderLatency(series [][]float64, timestamps []float64, w io.Writer, option
 	}
 
 	graph := chart.Chart{
-		Height: options.Height,
-		Width:  options.Width,
+		Height:       options.GetHeight(),
+		Width:        options.GetWidth(),
+		ColorPalette: options.GetColorPalette(),
+		Title:        options.GetTitle(),
+		TitleStyle:   options.GetTitleStyle(),
+
 		XAxis: chart.XAxis{
-			ValueFormatter: chart.TimeValueFormatterWithFormat("15:04"),
+			ValueFormatter: options.GetTimeFormatter(),
 		},
 		YAxis:  chart.YAxis{},
 		Series: timeSeries,
+	}
+
+	if len(options.Legend) > 0 {
+		graph.Elements = []chart.Renderable{
+			chart.LegendLeft(&graph),
+		}
 	}
 
 	return graph.Render(chart.PNG, w)

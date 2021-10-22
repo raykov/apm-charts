@@ -1,16 +1,19 @@
 package apmcharts
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"time"
 
 	"github.com/wcharczuk/go-chart/v2"
-	"github.com/wcharczuk/go-chart/v2/drawing"
 )
 
 // RenderTotalRequestErrors renders throughput with errors
 func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Writer, options Options) error {
+	if len(values) != 2 {
+		return errors.New("values should be a slice of 2 slices")
+	}
 	times := make([]time.Time, 0, len(timestamps))
 
 	for _, timestamp := range timestamps {
@@ -21,10 +24,14 @@ func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Wri
 	mx := max + max*0.1
 
 	graph := chart.Chart{
-		Height: options.Height,
-		Width:  options.Width,
+		Height:       options.GetHeight(),
+		Width:        options.GetWidth(),
+		ColorPalette: options.GetColorPalette(),
+		Title:        options.GetTitle(),
+		TitleStyle:   options.GetTitleStyle(),
+
 		XAxis: chart.XAxis{
-			ValueFormatter: chart.TimeValueFormatterWithFormat("15:04"),
+			ValueFormatter: options.GetTimeFormatter(),
 		},
 		YAxis: chart.YAxis{
 			Ticks: []chart.Tick{
@@ -42,8 +49,8 @@ func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Wri
 		Series: []chart.Series{
 			chart.TimeSeries{
 				Style: chart.Style{
-					StrokeColor: drawing.Color{R: 51, G: 153, B: 204, A: 255},
-					FillColor:   drawing.Color{R: 51, G: 153, B: 204, A: 255},
+					StrokeColor: options.GetColorPalette().GetSeriesColor(0),
+					FillColor:   options.GetColorPalette().GetSeriesColor(0),
 					StrokeWidth: 3.0,
 				},
 				XValues: times,
@@ -51,8 +58,8 @@ func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Wri
 			},
 			chart.TimeSeries{
 				Style: chart.Style{
-					StrokeColor: drawing.Color{R: 227, G: 27, B: 27, A: 255},
-					FillColor:   drawing.Color{R: 227, G: 27, B: 27, A: 255},
+					StrokeColor: options.GetColorPalette().GetSeriesColor(1),
+					FillColor:   options.GetColorPalette().GetSeriesColor(1),
 					StrokeWidth: 3.0,
 				},
 				XValues: times,
@@ -62,14 +69,4 @@ func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Wri
 	}
 
 	return graph.Render(chart.PNG, w)
-}
-
-func Max(values []float64) (max float64) {
-	for _, val := range values {
-		if val > max {
-			max = val
-		}
-	}
-
-	return max
 }

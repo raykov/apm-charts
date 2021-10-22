@@ -8,30 +8,6 @@ import (
 	"github.com/wcharczuk/go-chart/v2"
 )
 
-// DataWithLegend used to sort series to put less time consuming services down in chart
-type DataWithLegend struct {
-	series [][]float64
-	legend []string
-}
-
-// Len returns length
-func (d DataWithLegend) Len() int {
-	return len(d.series)
-}
-
-// Less checks if one item less than another
-func (d DataWithLegend) Less(i, j int) bool {
-	return d.series[j][0] > d.series[i][0]
-}
-
-// Swap swaps items
-func (d DataWithLegend) Swap(i, j int) {
-	d.series[i], d.series[j] = d.series[j], d.series[i]
-	if len(d.legend) == len(d.series) {
-		d.legend[i], d.legend[j] = d.legend[j], d.legend[i]
-	}
-}
-
 // RenderResponseTime renders response time chart, aka. service sublayer
 func RenderResponseTime(series [][]float64, timestamps []float64, w io.Writer, options Options) error {
 	times := make([]time.Time, 0, len(timestamps))
@@ -58,15 +34,10 @@ func RenderResponseTime(series [][]float64, timestamps []float64, w io.Writer, o
 			}
 		}
 
-		name := ""
-		if len(dataWithLegend.legend) == len(dataWithLegend.series) {
-			name = dataWithLegend.legend[index]
-		}
-
 		timeSeries = append(
 			[]chart.Series{
 				chart.TimeSeries{
-					Name: name,
+					Name: getLegend(dataWithLegend.legend, index),
 					Style: chart.Style{
 						StrokeColor: colorSchema[index],
 						FillColor:   colorSchema[index],
@@ -81,17 +52,23 @@ func RenderResponseTime(series [][]float64, timestamps []float64, w io.Writer, o
 	}
 
 	graph := chart.Chart{
-		Height: options.Height,
-		Width:  options.Width,
+		Height:       options.GetHeight(),
+		Width:        options.GetWidth(),
+		ColorPalette: options.GetColorPalette(),
+		Title:        options.GetTitle(),
+		TitleStyle:   options.GetTitleStyle(),
+
 		XAxis: chart.XAxis{
-			ValueFormatter: chart.TimeValueFormatterWithFormat("15:04"),
+			ValueFormatter: options.GetTimeFormatter(),
 		},
-		YAxis: chart.YAxis{},
+		YAxis:  chart.YAxis{},
 		Series: timeSeries,
 	}
 
-	graph.Elements = []chart.Renderable{
-		chart.LegendLeft(&graph),
+	if len(options.Legend) > 0 {
+		graph.Elements = []chart.Renderable{
+			chart.LegendLeft(&graph),
+		}
 	}
 
 	return graph.Render(chart.PNG, w)

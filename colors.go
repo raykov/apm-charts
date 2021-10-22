@@ -1,6 +1,8 @@
 package apmcharts
 
-import "github.com/wcharczuk/go-chart/v2/drawing"
+import (
+	"github.com/wcharczuk/go-chart/v2/drawing"
+)
 
 // Color Schema
 var colorSchema = []drawing.Color{
