@@ -5,12 +5,17 @@ import (
 	"io"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/wcharczuk/go-chart/v2"
 	"github.com/wcharczuk/go-chart/v2/drawing"
 )
 
 // RenderThroughput renders throughput chart
 func RenderThroughput(values, timestamps []float64, w io.Writer, options Options) error {
+	if len(values) != len(timestamps) {
+		return errors.New("RenderThroughput: amount of values and timestamps should be equal")
+	}
+
 	times := make([]time.Time, 0, len(timestamps))
 
 	for _, timestamp := range timestamps {

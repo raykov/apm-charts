@@ -46,21 +46,45 @@ func main() {
 			290 - 150,
 			310 - 145,
 			311 - 150,
-			280 - 120,
 		},
 	}
 
-	times := []float64{
-		float64(time.Now().AddDate(0, 0, -9).Unix()),
-		float64(time.Now().AddDate(0, 0, -8).Unix()),
-		float64(time.Now().AddDate(0, 0, -7).Unix()),
-		float64(time.Now().AddDate(0, 0, -6).Unix()),
-		float64(time.Now().AddDate(0, 0, -5).Unix()),
-		float64(time.Now().AddDate(0, 0, -4).Unix()),
-		float64(time.Now().AddDate(0, 0, -3).Unix()),
-		float64(time.Now().AddDate(0, 0, -2).Unix()),
-		float64(time.Now().AddDate(0, 0, -1).Unix()),
-		float64(time.Now().Unix()),
+	times := [][]float64{
+		{
+			float64(time.Now().AddDate(0, 0, -9).Unix()),
+			float64(time.Now().AddDate(0, 0, -8).Unix()),
+			float64(time.Now().AddDate(0, 0, -7).Unix()),
+			float64(time.Now().AddDate(0, 0, -6).Unix()),
+			float64(time.Now().AddDate(0, 0, -5).Unix()),
+			float64(time.Now().AddDate(0, 0, -4).Unix()),
+			float64(time.Now().AddDate(0, 0, -3).Unix()),
+			float64(time.Now().AddDate(0, 0, -2).Unix()),
+			float64(time.Now().AddDate(0, 0, -1).Unix()),
+			float64(time.Now().Unix()),
+		},
+		{
+			float64(time.Now().AddDate(0, 0, -9).Unix()),
+			float64(time.Now().AddDate(0, 0, -8).Unix()),
+			float64(time.Now().AddDate(0, 0, -7).Unix()),
+			float64(time.Now().AddDate(0, 0, -6).Unix()),
+			float64(time.Now().AddDate(0, 0, -5).Unix()),
+			float64(time.Now().AddDate(0, 0, -4).Unix()),
+			float64(time.Now().AddDate(0, 0, -3).Unix()),
+			float64(time.Now().AddDate(0, 0, -2).Unix()),
+			float64(time.Now().AddDate(0, 0, -1).Unix()),
+			float64(time.Now().Unix()),
+		},
+		{
+			float64(time.Now().AddDate(0, 0, -9).Unix()),
+			float64(time.Now().AddDate(0, 0, -8).Unix()),
+			float64(time.Now().AddDate(0, 0, -7).Unix()),
+			float64(time.Now().AddDate(0, 0, -6).Unix()),
+			float64(time.Now().AddDate(0, 0, -5).Unix()),
+			float64(time.Now().AddDate(0, 0, -4).Unix()),
+			float64(time.Now().AddDate(0, 0, -3).Unix()),
+			float64(time.Now().AddDate(0, 0, -2).Unix()),
+			float64(time.Now().AddDate(0, 0, -1).Unix()),
+		},
 	}
 
 	legend := []string{
