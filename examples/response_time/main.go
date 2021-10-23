@@ -25,7 +25,7 @@ func main() {
 			280,
 		},
 		{
-			300 - 50,
+
 			299 - 49,
 			299 - 52,
 			307 - 50,
@@ -40,7 +40,7 @@ func main() {
 			300 - 150,
 			299 - 149,
 			299 - 152,
-			307 - 150,
+
 			250 - 150,
 			299 - 154,
 			290 - 150,
@@ -50,17 +50,43 @@ func main() {
 		},
 	}
 
-	times := []float64{
-		float64(time.Now().AddDate(0, 0, -9).Unix()),
-		float64(time.Now().AddDate(0, 0, -8).Unix()),
-		float64(time.Now().AddDate(0, 0, -7).Unix()),
-		float64(time.Now().AddDate(0, 0, -6).Unix()),
-		float64(time.Now().AddDate(0, 0, -5).Unix()),
-		float64(time.Now().AddDate(0, 0, -4).Unix()),
-		float64(time.Now().AddDate(0, 0, -3).Unix()),
-		float64(time.Now().AddDate(0, 0, -2).Unix()),
-		float64(time.Now().AddDate(0, 0, -1).Unix()),
-		float64(time.Now().Unix()),
+	times := [][]float64{
+		{
+			float64(time.Now().AddDate(0, 0, -9).Unix()),
+			float64(time.Now().AddDate(0, 0, -8).Unix()),
+			float64(time.Now().AddDate(0, 0, -7).Unix()),
+			float64(time.Now().AddDate(0, 0, -6).Unix()),
+			float64(time.Now().AddDate(0, 0, -5).Unix()),
+			float64(time.Now().AddDate(0, 0, -4).Unix()),
+			float64(time.Now().AddDate(0, 0, -3).Unix()),
+			float64(time.Now().AddDate(0, 0, -2).Unix()),
+			float64(time.Now().AddDate(0, 0, -1).Unix()),
+			float64(time.Now().Unix()),
+		},
+		{
+
+			float64(time.Now().AddDate(0, 0, -8).Unix()),
+			float64(time.Now().AddDate(0, 0, -7).Unix()),
+			float64(time.Now().AddDate(0, 0, -6).Unix()),
+			float64(time.Now().AddDate(0, 0, -5).Unix()),
+			float64(time.Now().AddDate(0, 0, -4).Unix()),
+			float64(time.Now().AddDate(0, 0, -3).Unix()),
+			float64(time.Now().AddDate(0, 0, -2).Unix()),
+			float64(time.Now().AddDate(0, 0, -1).Unix()),
+			float64(time.Now().Unix()),
+		},
+		{
+			float64(time.Now().AddDate(0, 0, -9).Unix()),
+			float64(time.Now().AddDate(0, 0, -8).Unix()),
+			float64(time.Now().AddDate(0, 0, -7).Unix()),
+
+			float64(time.Now().AddDate(0, 0, -5).Unix()),
+			float64(time.Now().AddDate(0, 0, -4).Unix()),
+			float64(time.Now().AddDate(0, 0, -3).Unix()),
+			float64(time.Now().AddDate(0, 0, -2).Unix()),
+			float64(time.Now().AddDate(0, 0, -1).Unix()),
+			float64(time.Now().Unix()),
+		},
 	}
 
 	legend := []string{

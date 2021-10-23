@@ -4,11 +4,16 @@ import (
 	"io"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/wcharczuk/go-chart/v2"
 )
 
 // RenderTimeseries renders time series
 func RenderTimeseries(values, timestamps []float64, w io.Writer, options Options) error {
+	if len(values) != len(timestamps) {
+		return errors.New("RenderTimeseries: amount of values and timestamps should be equal")
+	}
+
 	times := make([]time.Time, 0, len(timestamps))
 
 	for _, timestamp := range timestamps {

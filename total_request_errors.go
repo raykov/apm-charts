@@ -1,23 +1,32 @@
 package apmcharts
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/wcharczuk/go-chart/v2"
 )
 
 // RenderTotalRequestErrors renders throughput with errors
-func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Writer, options Options) error {
+func RenderTotalRequestErrors(values, timestamps [][]float64, w io.Writer, options Options) error {
 	if len(values) != 2 {
-		return errors.New("values should be a slice of 2 slices")
+		return errors.New("RenderTotalRequestErrors: values should be a slice of 2 slices")
 	}
-	times := make([]time.Time, 0, len(timestamps))
+	if len(values) != len(timestamps) {
+		return errors.New("RenderTotalRequestErrors: amount of values and timestamps should be equal")
+	}
 
-	for _, timestamp := range timestamps {
-		times = append(times, time.Unix(int64(timestamp/1000), 0))
+	times := make([][]time.Time, 0, len(timestamps))
+
+	for index, subTimestamps := range timestamps {
+		times = append(times, make([]time.Time, 0, len(subTimestamps)))
+
+		for _, timestamp := range subTimestamps {
+			times[index] = append(times[index], time.Unix(int64(timestamp/1000), 0))
+		}
+
 	}
 
 	max := Max(values[0])
@@ -53,7 +62,7 @@ func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Wri
 					FillColor:   options.GetColorPalette().GetSeriesColor(0),
 					StrokeWidth: 3.0,
 				},
-				XValues: times,
+				XValues: times[0],
 				YValues: values[0],
 			},
 			chart.TimeSeries{
@@ -62,7 +71,7 @@ func RenderTotalRequestErrors(values [][]float64, timestamps []float64, w io.Wri
 					FillColor:   options.GetColorPalette().GetSeriesColor(1),
 					StrokeWidth: 3.0,
 				},
-				XValues: times,
+				XValues: times[1],
 				YValues: values[1],
 			},
 		},

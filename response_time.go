@@ -5,33 +5,43 @@ import (
 	"sort"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/wcharczuk/go-chart/v2"
 )
 
 // RenderResponseTime renders response time chart, aka. service sublayer
-func RenderResponseTime(series [][]float64, timestamps []float64, w io.Writer, options Options) error {
-	times := make([]time.Time, 0, len(timestamps))
-	converted := make([][]float64, len(series))
+func RenderResponseTime(series, timestamps [][]float64, w io.Writer, options Options) error {
+	if len(series) != len(timestamps) {
+		return errors.New("RenderResponseTime: amount of series and timestamps should be equal")
+	}
+
+	convertedIndexed := map[float64]float64{}
 
 	timeSeries := make([]chart.Series, 0, len(series))
 
 	dataWithLegend := DataWithLegend{
-		series: series,
-		legend: options.Legend,
+		series:     series,
+		legend:     options.Legend,
+		timestamps: timestamps,
 	}
 
 	sort.Sort(dataWithLegend)
 
 	for index, values := range dataWithLegend.series {
-		converted[index] = make([]float64, 0, len(values))
+		times := make([]time.Time, 0, len(dataWithLegend.timestamps[index]))
+		converted := make([]float64, 0, len(values))
 
 		for subIndex, value := range values {
-			if index == 0 {
-				times = append(times, time.Unix(int64(timestamps[subIndex]/1000), 0))
-				converted[index] = append(converted[index], value)
+			t := dataWithLegend.timestamps[index][subIndex]
+			if v, ok := convertedIndexed[t]; ok {
+				convertedIndexed[t] = value + v
+				converted = append(converted, value+v)
 			} else {
-				converted[index] = append(converted[index], value+converted[index-1][subIndex])
+				convertedIndexed[t] = value
+				converted = append(converted, value)
 			}
+
+			times = append(times, time.Unix(int64(dataWithLegend.timestamps[index][subIndex]/1000), 0))
 		}
 
 		timeSeries = append(
@@ -44,7 +54,7 @@ func RenderResponseTime(series [][]float64, timestamps []float64, w io.Writer, o
 						StrokeWidth: 1,
 					},
 					XValues: times,
-					YValues: converted[index],
+					YValues: converted,
 				},
 			},
 			timeSeries...,

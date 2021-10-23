@@ -4,12 +4,17 @@ import (
 	"io"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/wcharczuk/go-chart/v2"
 	"github.com/wcharczuk/go-chart/v2/drawing"
 )
 
 // RenderApdex renders Apdex chart
 func RenderApdex(values, timestamps []float64, w io.Writer, options Options) error {
+	if len(values) != len(timestamps) {
+		return errors.New("RenderApdex: amount of values and timestamps should be equal")
+	}
+
 	times := make([]time.Time, 0, len(timestamps))
 	yValues5000 := make([]float64, 0, len(timestamps))
 	yValues7500 := make([]float64, 0, len(timestamps))
